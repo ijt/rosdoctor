@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"github.com/wsxiaoys/terminal/color"
 )
 
 type Package struct {
@@ -30,16 +31,16 @@ func checkLocalPackages() int {
 		for _, p := range(localPkgs) {
 			names = append(names, p.name)
 		}
-		cmd := "sudo pip uninstall " + strings.Join(names, " ")
-		fmt.Println("You may want to run ", cmd)
-		fmt.Println(`It is a good idea to keep running this command
-	until it stops doing anything.`)
+		cmd := ("@{c}while sudo pip uninstall " +
+			strings.Join(names, " ") +
+			"; do echo Continuing; done@{|}")
+		color.Println("You may want to run", cmd)
 	}
 	return len(localPkgs)
 }
 
 func warn(args ...string) {
-	fmt.Println("Warning: ", strings.Join(args, " "))
+	color.Println("@{r}Warning@{|}:", strings.Join(args, " "))
 }
 
 // checkForLocalPackages looks for local packages that shadow ones that should
